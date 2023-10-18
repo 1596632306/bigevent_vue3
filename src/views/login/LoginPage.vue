@@ -3,6 +3,7 @@ import { User, Lock } from '@element-plus/icons-vue'
 import { ref, watch } from 'vue'
 import { userRegisterService, userLoginService } from '@/api/user.js'
 import { ElMessage } from 'element-plus'
+import 'element-plus/es/components/message/style/css'
 import userUserstore from '@/stores/modules/user'
 import { useRouter } from 'vue-router'
 const isRegister = ref(true)
@@ -61,8 +62,7 @@ const form = ref()
 const register = async () => {
   // 注册成功之前，先进行校验
   await form.value.validate()
-  let res = await userRegisterService(formModel.value)
-  console.log(res)
+  await userRegisterService(formModel.value)
   // console.log(formModel.value)
   ElMessage.success('注册成功')
   // console.log('开始注册请求')
@@ -75,8 +75,9 @@ const login = async () => {
   await form.value.validate()
   const res = await userLoginService(formModel.value)
   // console.log(res)
-  userStore.setToken(res.data.token)
   ElMessage.success('登录成功')
+  userStore.setToken(res.data.token)
+
   router.push('/')
 }
 // 当切换的时候，重置输入框
