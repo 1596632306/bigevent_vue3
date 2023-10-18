@@ -1,6 +1,6 @@
 /* eslint-env node */
 require('@rushstack/eslint-patch/modern-module-resolution')
-
+// 前端团队规范——husky + lint-staged 构建代码检查工作流
 module.exports = {
   root: true,
   extends: [
