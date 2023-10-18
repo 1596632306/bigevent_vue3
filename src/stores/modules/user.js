@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 // 用户模块
-export const userUserStore = defineStore(
+const useUserStore = defineStore(
   'big-user',
   () => {
     const token = ref('') //定义token
@@ -13,3 +13,4 @@ export const userUserStore = defineStore(
     persist: true //持久化存储
   }
 )
+export default useUserStore

@@ -1,8 +1,10 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
 import { ref, watch } from 'vue'
-import { userRegisterService } from '@/api/user.js'
+import { userRegisterService, userLoginService } from '@/api/user.js'
 import { ElMessage } from 'element-plus'
+import userUserstore from '@/stores/modules/user'
+import { useRouter } from 'vue-router'
 const isRegister = ref(true)
 // 注册数据对象
 const formModel = ref({
@@ -55,14 +57,27 @@ const rules = {
 }
 // 通过ref获取from组件
 const form = ref()
+// 注册事件
 const register = async () => {
   // 注册成功之前，先进行校验
   await form.value.validate()
-  let res = await userRegisterService(this.formModel.value)
+  let res = await userRegisterService(formModel.value)
   console.log(res)
+  // console.log(formModel.value)
   ElMessage.success('注册成功')
   // console.log('开始注册请求')
   isRegister.value = false
+}
+const userStore = userUserstore()
+const router = useRouter()
+// 登录事件
+const login = async () => {
+  await form.value.validate()
+  const res = await userLoginService(formModel.value)
+  // console.log(res)
+  userStore.setToken(res.data.token)
+  ElMessage.success('登录成功')
+  router.push('/')
 }
 // 当切换的时候，重置输入框
 // watch异步操作
@@ -163,7 +178,11 @@ watch(isRegister, () => {
           </div>
         </el-form-item>
         <el-form-item>
-          <el-button class="button" type="primary" auto-insert-space
+          <el-button
+            @click="login"
+            class="button"
+            type="primary"
+            auto-insert-space
             >登录</el-button
           >
         </el-form-item>
