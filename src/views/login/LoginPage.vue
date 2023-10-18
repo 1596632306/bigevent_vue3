@@ -1,7 +1,7 @@
 <script setup>
 import { User, Lock } from '@element-plus/icons-vue'
-import { ref } from 'vue'
-import { userRegisterService } from '@/api/user'
+import { ref, watch } from 'vue'
+import { userRegisterService } from '@/api/user.js'
 import { ElMessage } from 'element-plus'
 const isRegister = ref(true)
 // 注册数据对象
@@ -58,22 +58,21 @@ const form = ref()
 const register = async () => {
   // 注册成功之前，先进行校验
   await form.value.validate()
-  // console.log(formModel.value)
-  await userRegisterService(this.formModel.value)
-  // console.log(res.data)
+  let res = await userRegisterService(this.formModel.value)
+  console.log(res)
   ElMessage.success('注册成功')
   // console.log('开始注册请求')
   isRegister.value = false
 }
 // 当切换的时候，重置输入框
-//watch异步操作
-// watch(isRegister, () => {
-//   formModel.value = {
-//     username: '',
-//     password: '',
-//     repassword: ''
-//   }
-// })
+// watch异步操作
+watch(isRegister, () => {
+  formModel.value = {
+    username: '',
+    password: '',
+    repassword: ''
+  }
+})
 </script>
 
 <template>
